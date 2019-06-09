@@ -11,3 +11,5 @@ $sudo apt install git-all
 >>>git add <filename>
 >>>git commit -m "<commit_msg>"
 
+>>>git remote add origin https://github.com/umang8496/progit_repo.git
+>>>git push -u origin master
