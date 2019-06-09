@@ -1,0 +1,9 @@
+# Definitions
+
+Version Control Systems : They are a category of tools that help a software team manage changes to the source code over time.
+It keeps track of every modification to the code in a special kind of database.
+VCS are sometimes known as SCM(Source Code Management) or RCS(Revision Control System).
+
+GIT : It is the most widely used  Distributed VCS.
+
+GIT Repository : It is a virtual storage of the project. It allows us to save versions of our code which we can access when needed.
