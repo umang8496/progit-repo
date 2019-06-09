@@ -1,5 +1,6 @@
 $sudo apt-get install git
 $sudo apt install git-all
+$which git
 
 >>>git --version
 >>>git status
@@ -11,19 +12,49 @@ $sudo apt install git-all
 >>>git add <filename>
 >>>git commit -m "<commit_msg>"
 
+Never amend a commit that has been pished to the remote repository
+>>>git commit --amend --no-edit
+>>>git commit --amend
+
 >>>git remote add origin https://github.com/umang8496/progit_repo.git
 >>>git push -u origin master
 
 >>>git diff : displays what has been changed but not yet staged
->>>git diff --staged : compares staged changes to the last commit 
->>>git diff --cached : similar to --staged option
+>>>git diff --staged|--cached : compares staged changes to the last commit 
 
 >>>git log --oneline
 >>>git log --oneline --decorate --graph --all
+>>>git log --oneline <branch_name> : shows the logs corresponding to the specified branch
+>>>git log --stat --oneline -n <number>
+>>>git log -p
+>>>git log --oneline <filename> : displays the logs corresponding to the specified file
 
+In GIT, checkout is the act of switching between different versions of a target entity.
+It operates on three distinct entities, files, commits and branches.
 >>>git checkout -- <filename> : discards the changes made to the file when it is in unstaged state
+>>>git checkout -b <branch_name> : create a new branch and switch to it
+>>>git checkout <branch_name> : simply switch to the specified branch
 
 >>>git rm <filename> : removes the file from the staging area as well as working tree
 >>>git rm --cached <filename> : removes the file from tracking state but keeps it on the hard drive
 
 >>>git mv <file_from> <file_to> : used to rename a file and put the changes into staging area
+
+>>>git push <remote> <branch> : GIT won't let us push when it results in a non-fast-forward merge in the destination repository
+>>>git push <remote> --force|-f : pushes the commits and objects even if it results in a non-fast-forward merge
+>>>git push <remote> --all : pushes all the local branches to the specified remote
+
+>>>git fetch <remote> : fetches all the branches from the repo and downloads all of the required commits and files from the repo
+>>>git fetch <remote> <branch> : only fetches the specified branch
+>>>git fetch --all|-a : fetches all registered remotes and their branches
+>>>git fetch --dry-run : shows what would be done, without making any changes
+
+>>>git stash
+>>>git stash pop
+>>>git stash show
+>>>git stash list
+>>>git stash save "<stash_msg>"
+>>>git stash drop <stashID>
+>>>git stash clear
+>>>git stash --include-untracked|-u
+>>>git stash --all|-a
