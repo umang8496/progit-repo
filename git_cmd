@@ -1,0 +1,13 @@
+$sudo apt-get install git
+$sudo apt install git-all
+
+>>>git --version
+>>>git status
+
+>>>git config --global user.name "<user_name>"
+>>>git config --global user.email <user_email>
+>>>git config --global core.editor <editor_name> or <editor_path>
+
+>>>git add <filename>
+>>>git commit -m "<commit_msg>"
+
