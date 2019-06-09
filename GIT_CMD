@@ -49,12 +49,26 @@ It operates on three distinct entities, files, commits and branches.
 >>>git fetch --all|-a : fetches all registered remotes and their branches
 >>>git fetch --dry-run : shows what would be done, without making any changes
 
->>>git stash
->>>git stash pop
->>>git stash show
->>>git stash list
->>>git stash save "<stash_msg>"
->>>git stash drop <stashID>
->>>git stash clear
->>>git stash --include-untracked|-u
->>>git stash --all|-a
+>>>git stash : takes the uncommitted changes (staged and unstaged) and saves them away for later use
+>>>git stash pop : removes the changes from the stash and reapplies them to our working tree
+>>>git stash apply : reapplies the changes to the working tree and also keeps them in our stash (recommended)
+>>>git stash show : shows the summary for all the stashes
+>>>git stash show --patch|-p : shows the full diff of the stash
+>>>git stash list : lists all the stashes
+>>>git stash save "<stash_msg>" : saves a stash with the specified message
+>>>git stash drop <stashID> : drops a particular stash
+>>>git stash clear : clears the entire stash
+>>>git stash --include-untracked|-u : to stash untracked files also
+>>>git stash --all|-a : stashes everything including ignored files
+
+This removes only the untracked files from the working directory.
+>>>git clean -n : performs a dry-run of git clean; shows which files are going to be removed without actually removing them
+>>>git clean -f|--force : initiates the actual deletion of the untracted files from the current directory
+
+>>>git revert <SHA> : for undoing changes but does not remove the commit from the project history
+>>>git revert HEAD --edit|-e : default option which will open the configured system editor and prompts us to edit the commmit message
+>>>git revert HEAD --no-edit|-n : the revert will not open the editor
+>>>git revert HEAD --no-commit|-n : this option will prevent git revert from creating a new commit that inverses the target commit.
+				    Instead  this option will add the inverse changes to the Staging Index and Working Directory.
+
+>>>git reset --soft|--mixed|--hard <SHA>
