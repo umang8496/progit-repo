@@ -13,3 +13,8 @@ $sudo apt install git-all
 
 >>>git remote add origin https://github.com/umang8496/progit_repo.git
 >>>git push -u origin master
+
+>>>git diff
+>>>git diff --staged or >>>git diff --cached
+
+>>>git checkout -- <filename>
