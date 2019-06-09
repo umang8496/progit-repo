@@ -14,7 +14,14 @@ $sudo apt install git-all
 >>>git remote add origin https://github.com/umang8496/progit_repo.git
 >>>git push -u origin master
 
->>>git diff
->>>git diff --staged or >>>git diff --cached
+>>>git diff : displays what has been changed but not yet staged
+>>>git diff --staged : compares staged changes to the last commit 
+>>>git diff --cached : similar to --staged option
 
->>>git checkout -- <filename>
+>>>git log --oneline
+>>>git log --oneline --decorate --graph --all
+
+>>>git checkout -- <filename> : discards the changes made to the file when it is in unstaged state
+
+>>>git rm <filename> : removes the file from the staging area as well as working tree
+>>>git rm --cached <filename> : removes the file from tracking state but keeps it on the hard drive
