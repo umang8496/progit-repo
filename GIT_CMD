@@ -25,3 +25,5 @@ $sudo apt install git-all
 
 >>>git rm <filename> : removes the file from the staging area as well as working tree
 >>>git rm --cached <filename> : removes the file from tracking state but keeps it on the hard drive
+
+>>>git mv <file_from> <file_to> : used to rename a file and put the changes into staging area
