@@ -1,9 +1,95 @@
 # Definitions
 
-Version Control Systems : They are a category of tools that help a software team manage changes to the source code over time.
+Version Control Systems
+-----------------------
+They are a category of tools that help a software team manage changes to the source code over time.
 It keeps track of every modification to the code in a special kind of database.
 VCS are sometimes known as SCM(Source Code Management) or RCS(Revision Control System).
+GIT is the most widely used  Distributed VCS.
 
-GIT : It is the most widely used  Distributed VCS.
 
-GIT Repository : It is a virtual storage of the project. It allows us to save versions of our code which we can access when needed.
+GIT Repository
+--------------
+It is a virtual storage of the project. It allows us to save versions of our code which we can access when needed.
+In Git, "origin" is a shorthand name for the remote repository that a project was originally cloned from.
+More precisely, it is used instead of that original repository's URL - and thereby makes referencing much easier.
+
+
+git push
+--------
+If you are publishing a local branch for the first time on a remote, the "-u" option is helpful.
+It makes sure that a tracking connection between the local and the newly created remote branch is established.
+>>>git push -u <remote_repository> <local_branch>
+>>>git push -u origin devline01
+
+
+git fetch v/s git pull
+----------------------
+The git fetch command downloads commits, files, and refs from a remote repository into your local repo.
+
+Downloading data is an essential step in our daily work because the remote data we are looking in our local repo is just a snapshot.
+It's only as up-to-date as the last time we explicitly downloaded fresh data from the remote with fetch or pull.
+
+git fetch only downloads new data from a remote repo, but does not integrate any of this new data into our working files.
+Due to it's harmless nature, we can rest assured, fetch will never manipulate destroy, or screw up anything.
+
+git pull, in contrast, is used with a different goal in mind: to update our current HEAD branch with the latest changes from the remote server.
+This means that git pull not only downloads the new data but also directly integrates it into our current working files.
+It has its own consequences.
+Since git pull tries to merge remote changes with our local ones, a so-called merge-conflict can occur.
+Also, we should not have any uncommitted local changes before we pull data.
+
+In the simplest terms, git pull does a git fetch followed by a git merge.
+
+
+Undoing Changes
+---------------
+Using the git checkout command we can checkout the previous commit, putting the repository in a state before the crazy commit happened.
+Checking out a specific commit will put the repo in a "detached HEAD" state. This means we are no longer working on any branch.
+In a detached state, any new commits we make will be orphaned when we change branches back to an established branch.
+Orphaned commits are up for deletion by Git's garbage collector.
+The garbage collector runs on a configured interval and permanently destroys orphaned commits.
+To prevent orphaned commits from being garbage collected, we need to ensure we are on a branch.
+
+From the detached HEAD state, we can create a new branch which does not know about the crazy commit and we can continue working on this branch.
+Unfortunately, if we need the previous branch, maybe it was our master branch, then this strategy is not appropriate.
+
+If we execute "git revert HEAD" GIT will create a new commit with the inverse of the last commit.
+This adds a new commit to the current branch history and does not remove the earlier crazy commit.
+Unlike the previous checkout startegy, we can continue using the same branch.
+This is the ideal undo method for working with the public shared repositories.
+But if our requirement is of keeping a curated and minimal GIT history then this strategy may not be satisfactory.
+
+
+The git clean is to some extent an 'undo' command and can be considered complementary to commands like get reset and git checkout.
+Unlike git reset and git checkout that work on tracked files, git clean mainly operates on untracked files.
+By default, Git is globally configured to require that git clean be passed a "force" option to initiate.
+This is an important safety mechanism. When finally executed git clean is not undo-able.
+When fully executed, git clean will make a hard filesystem deletion, similar to executing the command line rm utility.
+
+
+The git revert command can be considered as an 'undo' type command, however, it is not a traditional undo operation.
+Other 'undo' commands like, git checkout and git reset, move the HEAD and branch ref pointers to a specified commit.
+Whereas git revert also takes a specified commit, however it does not move ref pointers to this commit.
+A revert operation will take the specified commit, inverse the changes from that commit, and create a new "revert commit".
+The ref pointers are then updated to point at the new revert commit making it the tip of the branch.
+
+
+The git reset command is a complex and versatile tool for undoing changes. It has three primary forms of invocation.
+These forms correspond to commandline arguments --soft, --mixed, --hard.
+The three arguments each correspond to - The Commit Tree (HEAD), The Staging Index, and The Working Directory.
+
+--soft
+	does not change staging index or working directory.
+	just moves the HEAD pointer to the previous commit.
+	the repository gets back to an ealier version.
+--mixed (default)
+	it moves the HEAD pointer to the specified commit,
+	and also changes the staging index to match the repository.
+	does not change the working index.
+--hard
+	it moves the HEAD pointer to the specified commit.
+	and it changes the staging index as well as the working directory to match the repository.
+	it is mainly used when the user has done some unrecoverable mistakes.
+#
+#
