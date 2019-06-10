@@ -3,7 +3,9 @@ $sudo apt install git-all
 $which git
 
 >>>git --version
+>>>git init
 >>>git status
+>>>git clone <SSH|URL> : gives the cloned version of the repository with master branch
 
 >>>git config --global user.name "<user_name>"
 >>>git config --global user.email <user_email>
@@ -12,7 +14,7 @@ $which git
 >>>git add <filename>
 >>>git commit -m "<commit_msg>"
 
-Never amend a commit that has been pished to the remote repository
+Never amend a commit that has been pushed to the remote repository
 >>>git commit --amend --no-edit
 >>>git commit --amend
 
@@ -21,6 +23,7 @@ Never amend a commit that has been pished to the remote repository
 
 >>>git diff : displays what has been changed but not yet staged
 >>>git diff --staged|--cached : compares staged changes to the last commit 
+>>>git diff --color-words <file_name>
 
 >>>git log --oneline
 >>>git log --oneline --decorate --graph --all
@@ -28,12 +31,27 @@ Never amend a commit that has been pished to the remote repository
 >>>git log --stat --oneline -n <number>
 >>>git log -p
 >>>git log --oneline <filename> : displays the logs corresponding to the specified file
+>>>git log --follow [file] : lists version history for a file, including renames
+>>>git log --format=oneline : [format --> full, short, medium, fuller, email, raw]
+>>>git log <SHA>..<SHA> --oneline <file_name>
+>>>git log --stat --summary
+>>>git log <branch_name> --oneline -<number> : it will show n number of logs for a branch
 
-In GIT, checkout is the act of switching between different versions of a target entity.
-It operates on three distinct entities, files, commits and branches.
+In GIT, checkout is the act of switching between different versions of a target entity
+It operates on three distinct entities, files, commits and branches
 >>>git checkout -- <filename> : discards the changes made to the file when it is in unstaged state
+>>>git checkout <SHA> -- <file_name> : bring the specified file in sync with the earlier version of itself corresponding to the commit
+
 >>>git checkout -b <branch_name> : create a new branch and switch to it
 >>>git checkout <branch_name> : simply switch to the specified branch
+>>>git checkout --force|-f <branch_name>
+
+>>>git branch : displays the current branch
+>>>git branch <branch_name> : creates a branch with the specified name
+>>>git branch -m <existing_branch_name> <new_branch_name> : renaming a branch
+>>>git branch -d <name-of-the-branch> : does not delete the unmerged branches 
+>>>git branch -D <name-of-the-branch> : deletes the unmerged branches too
+>>>git branch --merged : tells us what branch has been incorporated into the current branch
 
 >>>git rm <filename> : removes the file from the staging area as well as working tree
 >>>git rm --cached <filename> : removes the file from tracking state but keeps it on the hard drive
@@ -43,6 +61,8 @@ It operates on three distinct entities, files, commits and branches.
 >>>git push <remote> <branch> : GIT won't let us push when it results in a non-fast-forward merge in the destination repository
 >>>git push <remote> --force|-f : pushes the commits and objects even if it results in a non-fast-forward merge
 >>>git push <remote> --all : pushes all the local branches to the specified remote
+>>>git push origin :<branch-name> : this would delete the branch from the remote server [older method]
+>>>git push origin --delete <branch-name> : this would delete the branch from the remote server [newer method]
 
 >>>git fetch <remote> : fetches all the branches from the repo and downloads all of the required commits and files from the repo
 >>>git fetch <remote> <branch> : only fetches the specified branch
@@ -72,3 +92,18 @@ This removes only the untracked files from the working directory.
 				    Instead  this option will add the inverse changes to the Staging Index and Working Directory.
 
 >>>git reset --soft|--mixed|--hard <SHA>
+>>>git reset HEAD <file_name> : for unstaging the changes, we use the reset option
+>>>git reset --hard : reset staging area and working directory to match most recent commit and overwrites all the changes in the CWD
+
+--soft
+does not change staging index or working directory; just moves the HEAD pointer to the previous commit.
+
+--mixed (default)
+moves the HEAD pointer to the specified commit and also changes the staging index to match the repository.
+but does not change the working index.
+
+--hard
+moves the HEAD pointer to the specified commit and it changes the staging index as well as the working directory to match.
+#
+#
+#
