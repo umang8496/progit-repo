@@ -110,3 +110,22 @@ Its very important to understand that even though the branch looks the same, it'
 The primary reason for rebasing is to maintain a linear project history.
 
 The benefits of having a clean history become tangible when performing Git operations to investigate the introduction of a regression.
+
+Rebasing is a common way to integrate upstream changes into our local repository.
+Pulling in upstream changes with Git merge results in a superfluous merge commit every time we want to see how the project has progressed.
+On the other hand, rebasing is like saying, “I want to base my changes on what everybody has already done.”
+
+git rebase <base> : standard mode
+Rebase in standard mode will automatically take the commits in the current branch and apply them to the HEAD of the passed branch.
+
+git rebase -i <base> : interactive mode
+Instead of moving all of the commits to the new base, interactive rebasing gives us the opportunity to alter individual commits in the process.
+
+Interactive Rebase has some commands for the commits to rebased in the required manner.
+p, pick = use commit
+r, reword = use commit, but edit the commit message
+e, edit = use commit, but stop for amending
+s, squash = use commit, but meld into previous commit
+f, fixup = like "squash", but discard this commit's log message
+x, exec = run command (the rest of the line) using shell
+d, drop = remove commit

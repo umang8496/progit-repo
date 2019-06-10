@@ -10,12 +10,13 @@ $which git
 >>>git config --global user.name "<user_name>"
 >>>git config --global user.email <user_email>
 >>>git config --global core.editor <editor_name> or <editor_path>
+>>>git config --global branch.autosetuprebase always : helps avoid unintentional merge commits (imp)
 
 >>>git add <filename>
 >>>git commit -m "<commit_msg>"
 
 Never amend a commit that has been pushed to the remote repository
->>>git commit --amend --no-edit
+>>>git commit --amend --no-edit : amends the most recent commit with more changes (imp)
 >>>git commit --amend
 
 >>>git remote add origin https://github.com/umang8496/progit_repo.git
@@ -37,8 +38,8 @@ Never amend a commit that has been pushed to the remote repository
 >>>git log --stat --summary
 >>>git log <branch_name> --oneline -<number> : it will show n number of logs for a branch
 
-In GIT, checkout is the act of switching between different versions of a target entity
-It operates on three distinct entities, files, commits and branches
+In GIT, checkout is the act of switching between different versions of a target entity.
+It operates on three distinct entities, files, commits and branches.
 >>>git checkout -- <filename> : discards the changes made to the file when it is in unstaged state
 >>>git checkout <SHA> -- <file_name> : bring the specified file in sync with the earlier version of itself corresponding to the commit
 
@@ -104,6 +105,9 @@ but does not change the working index.
 
 --hard
 moves the HEAD pointer to the specified commit and it changes the staging index as well as the working directory to match.
-#
-#
-#
+
+>>>git pull --rebase : just pulls the latest changes into the local repository without merging it (recommended)
+>>>git pull origin <branch> : it pulls the remote changes and merges it with the local branch thereby creating one more commit
+
+>>>git remote -v : displays the configured git remote servers
+>>>git remote add <shortname> <url> : adds the new remote explicitly with the alias name
