@@ -12,8 +12,14 @@ $which git
 >>>git config --global core.editor <editor_name> or <editor_path>
 >>>git config --global branch.autosetuprebase always : helps avoid unintentional merge commits (imp)
 
->>>git add <filename>
->>>git commit -m "<commit_msg>"
+>>>git config --global alias.ck checkout : creates ck as an alias for checkout
+>>>git config --global alias.br branch : creates br as an alias for branch
+>>>git config --global alias.st status : creates st as an alias for status
+>>>git config --global alias.unstage 'reset HEAD --' : equivalent to git unstage <file>
+>>>git config --global alias.last 'log -1 HEAD' : displays the last log details 
+
+>>>git add <filename> : adds a file to the staging area
+>>>git commit -m "<commit_msg>" : commits the files which is in the staging area
 
 Never amend a commit that has been pushed to the remote repository
 >>>git commit --amend --no-edit : amends the most recent commit with more changes (imp)
@@ -111,3 +117,20 @@ moves the HEAD pointer to the specified commit and it changes the staging index 
 
 >>>git remote -v : displays the configured git remote servers
 >>>git remote add <shortname> <url> : adds the new remote explicitly with the alias name
+>>>git remote rename <existing_name> <new_name>
+>>>git remote remove <remote_name>
+
+>>>git tag --list|-l : lists the tags in alphabetical order
+>>>git tag -l "<tag_name>" : searches for a tag that match the particular pattern
+>>>git tag -a <tag_name> -m "<tag_msg>" : creates an annotated tag with the specified tag name
+>>>git show <tag_name> : displays the tag details
+>>>git tag <tag_name> : creates a lightweighted tag
+>>>git tag -a <tag_name> <SHA> : creates the tag corresponding to the commit SHA after getting passed the commit
+>>>git tag -d <tag_name> : deletes the tag from the local repository; this doesn't remove remote tag from the server
+>>>git push <remote> --delete <tag_name> : deletes the remote tag from the remote repository
+>>>git checkout <tag_name> : checkouts the version of the snapshot but also puts the repository in the "detached HEAD" state
+>>>git checout -b <branch> <tag_name> : creates a branch out of the specified tag
+
+By default, git push command doesn't transfer tags to remote servers. We need to explicitly push tags to a shared server.
+>>>git push <remote> <tag_name>
+>>>git push <remote> --tags : transfers all the tags to the remote server
