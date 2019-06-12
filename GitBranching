@@ -1,0 +1,53 @@
+GitBranching
+============
+Branching means you diverge from the main line of development and continue to do work without messing with that main line.
+When you make a commit, Git stores a commit object that contains a pointer to the snapshot of the content you staged.
+This object also contains the author’s name and email address, the message that you typed, and pointers to the commit or commits that directly came before this commit.
+
+Staging the files computes a checksum (SHA-1), stores that version of the file in the Git repository (Git refers to them as blobs), and adds that checksum to the staging area.
+
+When you create the commit by running git commit, Git checksums each subdirectory and stores them as a tree object in the Git repository.
+Git then creates a commit object that has the metadata and a pointer to the root project tree so it can re-create that snapshot when needed.
+If you make some changes and commit again, the next commit stores a pointer to the commit that came immediately before it.
+
+A branch in Git is simply a lightweight movable pointer to one of these commits. The default branch name in Git is master.
+As you start making commits, you’re given a master branch that points to the last commit you made.
+Every time you commit, the master branch pointer moves forward automatically.
+
+>>>git branch <branch> : creates a branch with the specified name
+>>>git checkout <branch> : checksout to the branch
+>>>git checkout -b <branch> : creates and checksout to the branch
+
+>>>git branch -d <branch> : deletes the specified branch
+
+The “master” branch in Git is not a special branch. It is exactly like any other branch.
+The only reason nearly every repository has one is that the git init command creates it by default and most people don’t bother to change it.
+
+Creating a new branch creates a new pointer for us to move around.
+In GIT, HEAD is the pointer to the local branch that is currently active.
+
+It is important to note that when we switch branches in GIT, files in our working directory also change.
+
+Because a branch in Git is actually a simple file that contains the 40 character SHA-1 checksum of the commit it points to,
+branches are cheap to create and destroy. Creating a new branch is as quick and simple as writing 41 bytes to a file (40 characters and a newline).
+
+We merge branches using the merge command. For this we need to be present on the branch with would incorporate the other branch into it.
+>>>git merge <branch>
+
+When we try to merge one commit with a commit that can be reached by following the first commit’s history,
+Git simplifies things by moving the pointer forward because there is no divergent work to merge together — this is called a “fastforward".
+
+When the development history gets diverged or the commit on the current branch isn't a direct ancestor of the branch we are merging in, then
+GIT has to do some work and does a three-way merge, using two snapshots pointed by the branch tip and the common commit of the two.
+
+Instead of just moving the branch pointer forward, Git creates a new snapshot that results from this three-way merge and
+automatically creates a new commit that points to it.
+This is referred to as a merge commit, and is special in that it has more than one parent.
+
+If we changed the same part of the same file differently in two branches we are merging, GIT won't be able to merge them cleanly.
+And, Hence will raise a merge conflict.
+Here, GIT will pause the merge process until we resolve the conflict.
+Anything that has merge conflicts and hasn't been resolved is listed as unmerged.
+
+Once we are done with resolving the merge-conflicts, we need to add the files and stage them.
+Once everything has been staged, we can commit to finalize the merge commit and provide a suitable commit message.

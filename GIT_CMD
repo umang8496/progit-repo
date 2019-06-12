@@ -53,12 +53,17 @@ It operates on three distinct entities, files, commits and branches.
 >>>git checkout <branch_name> : simply switch to the specified branch
 >>>git checkout --force|-f <branch_name>
 
+>>>git branch <branch> : creates a branch but does not switch to it
 >>>git branch : displays the current branch
 >>>git branch <branch_name> : creates a branch with the specified name
 >>>git branch -m <existing_branch_name> <new_branch_name> : renaming a branch
 >>>git branch -d <name-of-the-branch> : does not delete the unmerged branches 
 >>>git branch -D <name-of-the-branch> : deletes the unmerged branches too
 >>>git branch --merged : tells us what branch has been incorporated into the current branch
+>>>git branch -v : displays the last commit of each branch
+
+>>>git branch --merged : displays the branches that are already merged into the current branch
+>>>git branch --no-merged : displays the branches that have not been merged yet into the current branch
 
 >>>git rm <filename> : removes the file from the staging area as well as working tree
 >>>git rm --cached <filename> : removes the file from tracking state but keeps it on the hard drive
