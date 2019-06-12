@@ -119,6 +119,8 @@ moves the HEAD pointer to the specified commit and it changes the staging index 
 >>>git remote add <shortname> <url> : adds the new remote explicitly with the alias name
 >>>git remote rename <existing_name> <new_name>
 >>>git remote remove <remote_name>
+>>>git remote show <remote> : displays the full list of remote references
+>>>git fetch <remote> : helps synchronize our branch with the remote server
 
 >>>git tag --list|-l : lists the tags in alphabetical order
 >>>git tag -l "<tag_name>" : searches for a tag that match the particular pattern
