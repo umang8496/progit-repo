@@ -61,6 +61,7 @@ It operates on three distinct entities, files, commits and branches.
 >>>git branch -D <name-of-the-branch> : deletes the unmerged branches too
 >>>git branch --merged : tells us what branch has been incorporated into the current branch
 >>>git branch -v : displays the last commit of each branch
+>>>git branch -vv : displays all the tracking branches along with their latest commits
 
 >>>git branch --merged : displays the branches that are already merged into the current branch
 >>>git branch --no-merged : displays the branches that have not been merged yet into the current branch
@@ -124,6 +125,7 @@ moves the HEAD pointer to the specified commit and it changes the staging index 
 >>>git remote add <shortname> <url> : adds the new remote explicitly with the alias name
 >>>git remote rename <existing_name> <new_name>
 >>>git remote remove <remote_name>
+>>>git remote show <remote> : displays the full list of remote references
 
 >>>git tag --list|-l : lists the tags in alphabetical order
 >>>git tag -l "<tag_name>" : searches for a tag that match the particular pattern
@@ -139,3 +141,6 @@ moves the HEAD pointer to the specified commit and it changes the staging index 
 By default, git push command doesn't transfer tags to remote servers. We need to explicitly push tags to a shared server.
 >>>git push <remote> <tag_name>
 >>>git push <remote> --tags : transfers all the tags to the remote server
+
+If we already have a local branch and want to set it to a remote branch we just pulled down, or want to change the upstream branch we’re tracking, we can use the -u or --set-upstream-to option to git branch to explicitly set it at any time.
+>>>git branch --set-upstream-to|-u origin/serverfix
