@@ -1,0 +1,131 @@
+GitBranching
+============
+Branching means you diverge from the main line of development and continue to do work without messing with that main line.
+When you make a commit, Git stores a commit object that contains a pointer to the snapshot of the content you staged.
+This object also contains the author’s name and email address, the message that you typed, and pointers to the commit or commits that directly came before this commit.
+
+Staging the files computes a checksum (SHA-1), stores that version of the file in the Git repository (Git refers to them as blobs), and adds that checksum to the staging area.
+
+When you create the commit by running git commit, Git checksums each subdirectory and stores them as a tree object in the Git repository.
+Git then creates a commit object that has the metadata and a pointer to the root project tree so it can re-create that snapshot when needed.
+If you make some changes and commit again, the next commit stores a pointer to the commit that came immediately before it.
+
+A branch in Git is simply a lightweight movable pointer to one of these commits. The default branch name in Git is master.
+As you start making commits, you’re given a master branch that points to the last commit you made.
+Every time you commit, the master branch pointer moves forward automatically.
+
+>>>git branch <branch> : creates a branch with the specified name
+>>>git checkout <branch> : checksout to the branch
+>>>git checkout -b <branch> : creates and checksout to the branch
+
+>>>git branch -d <branch> : deletes the specified branch
+
+The “master” branch in Git is not a special branch. It is exactly like any other branch.
+The only reason nearly every repository has one is that the git init command creates it by default and most people don’t bother to change it.
+
+Creating a new branch creates a new pointer for us to move around.
+In GIT, HEAD is the pointer to the local branch that is currently active.
+
+It is important to note that when we switch branches in GIT, files in our working directory also change.
+
+Because a branch in Git is actually a simple file that contains the 40 character SHA-1 checksum of the commit it points to,
+branches are cheap to create and destroy. Creating a new branch is as quick and simple as writing 41 bytes to a file (40 characters and a newline).
+
+
+Basic Merging
+-------------
+We merge branches using the merge command. For this we need to be present on the branch with would incorporate the other branch into it.
+>>>git merge <branch>
+
+When we try to merge one commit with a commit that can be reached by following the first commit’s history,
+Git simplifies things by moving the pointer forward because there is no divergent work to merge together — this is called a “fastforward".
+
+When the development history gets diverged or the commit on the current branch isn't a direct ancestor of the branch we are merging in, then
+GIT has to do some work and does a three-way merge, using two snapshots pointed by the branch tip and the common commit of the two.
+
+Instead of just moving the branch pointer forward, Git creates a new snapshot that results from this three-way merge and
+automatically creates a new commit that points to it.
+This is referred to as a merge commit, and is special in that it has more than one parent.
+
+If we changed the same part of the same file differently in two branches we are merging, GIT won't be able to merge them cleanly.
+And, Hence will raise a merge conflict.
+Here, GIT will pause the merge process until we resolve the conflict.
+Anything that has merge conflicts and hasn't been resolved is listed as unmerged.
+
+Once we are done with resolving the merge-conflicts, we need to add the files and stage them.
+Once everything has been staged, we can commit to finalize the merge commit and provide a suitable commit message.
+
+Using the --merged and --no-merged options with git branch, we can filter the list of branches that we have or have not yet merged with the currently checked out branch.
+
+
+Remote Branches
+---------------
+Remote references are remote pointers in our remote repositories, including branches, tags, and so on.
+>>>git remote show <remote> : displays the full list of remote references
+
+Remote-tracking branches are references to the state of remote branches.
+They’re local references that we can’t move; Git moves them for us whenever we do any network communication, to make sure they accurately represent the state of the remote repository.
+Remote-tracking branch names take the form <remote>/<branch>.
+
+As long as we stay out of contact with our remote server, our <remote>/<branch> or origin/master pointer does not move.
+To synchronize our work with a given remote, we run git fetch <remote> command.
+This command looks up the server and fetches any data from it that we don't yet have, updates our local database, moving our <remote>/<master> pointer to its new updated position.
+
+Checking out a local branch from a remote-tracking branch automatically creates what is called a "tracking branch" and the branch it tracks is called an "upstream branch".
+Tracking branches are local branches that have a direct relationship to a remote branch.
+
+If we already have a local branch and want to set it to a remote branch we just pulled down, or want to change the upstream branch we’re tracking, we can use the -u or --set-upstream-to option to git branch to explicitly set it at any time.
+>>>git branch --set-upstream-to|-u origin/serverfix
+
+The git fetch command will fetch all the changes that are on the server that we don't have yet, but it will not modify our working directory.
+It will simply get the data for us and let us merge it by ourselves.
+There is a command called git pull which is essentially a git fetch immediately followed by a git merge in most cases.
+Generally it’s better to simply use the fetch and merge commands explicitly as the magic of git pull can often be confusing.
+
+
+Rebasing
+--------
+In Git, there are two main ways to integrate changes from one branch into another: the merge and the rebase.
+The easiest way to integrate the branches is merge command. It performs a three-way merge between two latest branch snapshots and the most recent common ancestor of the two, creating a new snapshot.
+There is another way, we can take the patch of the changes that are introduced in the branch that we wish to merge into the other one, and replay that patch on top of the branch that is consuming the other one.
+
+In GIT, with rebase we can take all the changes that were committed on one branch and replay them on a different branch.
+For this, we need to checkout to the branch that we wish to merge into the other one.
+
+This operation works by
+--> going to the common ancestor of the two branches (the one you’re on and the one you’re rebasing onto),
+--> getting the diff introduced by each commit of the branch we’re on,
+--> saving those diffs to temporary files and resetting the current branch to the same commit as the branch we are rebasing onto, 
+--> and finally applying each change in turn.
+
+At this point, we can go to the master branch and doa fast-forward merge.
+Rebasing replays changes from one line of work onto another in the order they were introduced,
+whereas merging takes the endpoints and merges them together.
+
+
+The Perils of Rebasing
+----------------------
+Do not rebase commits that exist outside your repository and people may have based work on them.
+When we rebase stuff, we’re abandoning existing commits and creating new ones that are similar but different.
+If we push commits somewhere and others pull them down and base work on them, and then we rewrite those commits with git rebase and push them up again our collaborators will have to re-merge their work and things will get messy when we try to pull their work back into ours.
+
+Suppose we clone from a central server and then do some work off that.
+Now, someone else does more work that includes a merge, and pushes that work to the central server.
+We fetch it and merge the new remote branch into our work.
+Next, the person who pushed the merged work decides to go back and rebase their work instead; and does a git push --force to overwrite the history on the server.
+We then fetch from that server, bringing down the new commits.
+
+Now if we do a git pull, we’ll create a merge commit which includes both lines of history.
+If we run a git log, we’ll see two commits that have the same author, date, and message, which will be confusing.
+Furthermore, if we push this history back up to the server, it will reintroduce all those rebased commits to the central server, which can further
+confuse people.
+
+
+Solution for Rebase is Another Rebase
+-------------------------------------
+If we pull down work that was rewritten and rebase it on top of the new commits from our partner, Git can often successfully figure out what is uniquely ours and apply them back on top of the new branch.
+
+We can also simplify this by running a git pull --rebase instead of a normal git pull. Or
+we could do it manually with a git fetch followed by a git rebase teamone/master in this case.
+
+###
