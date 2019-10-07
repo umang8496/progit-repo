@@ -36,7 +36,7 @@ Never amend a commit that has been pushed to the remote repository
 >>>git log --oneline --decorate --graph --all
 >>>git log --oneline <branch_name> : shows the logs corresponding to the specified branch
 >>>git log --stat --oneline -n <number>
->>>git log -p
+>>>git log -p -<n>: shows all the details related to the commit; n corresponds to an integer
 >>>git log --oneline <filename> : displays the logs corresponding to the specified file
 >>>git log --follow [file] : lists version history for a file, including renames
 >>>git log --format=oneline : [format --> full, short, medium, fuller, email, raw]
@@ -87,12 +87,26 @@ It operates on three distinct entities, files, commits and branches.
 >>>git stash apply : reapplies the changes to the working tree and also keeps them in our stash (recommended)
 >>>git stash show : shows the summary for all the stashes
 >>>git stash show --patch|-p : shows the full diff of the stash
+>>>git stash show stash@{ID} : shows the full diff of a particular stash
 >>>git stash list : lists all the stashes
 >>>git stash save "<stash_msg>" : saves a stash with the specified message
 >>>git stash drop <stashID> : drops a particular stash
 >>>git stash clear : clears the entire stash
 >>>git stash --include-untracked|-u : to stash untracked files also
 >>>git stash --all|-a : stashes everything including ignored files
+
+For stashing only a bunch of files not all of the files present in the staging, unstaged or untracked areas.
+>>>git stash save --patch|-p "<stashing message>" : opens up an intractive window with the options for each individual files
+    y : stash this hunk
+    n : do not stash this hunk
+    q : quit; do not stash this hunk or any of the remaining ones
+    a : stash this hunk and all the later hunks in the file
+    d : do not stash this hunk or any of the later hunks in the file
+    j : leave this hunk undecided, see next undecided hunk
+    J : leave this hunk undecided, see next hunk
+    k : leave this hunk undecided, see previous undecided hunk
+    K : leave this hunk undecided, see previous hunk
+    e : edit the current hunk manually
 
 This removes only the untracked files from the working directory.
 >>>git clean -n : performs a dry-run of git clean; shows which files are going to be removed without actually removing them
@@ -126,6 +140,8 @@ moves the HEAD pointer to the specified commit and it changes the staging index 
 >>>git remote rename <existing_name> <new_name>
 >>>git remote remove <remote_name>
 >>>git remote show <remote> : displays the full list of remote references
+
+>>>git fetch <remote> : helps synchronize our branch with the remote server
 
 >>>git tag --list|-l : lists the tags in alphabetical order
 >>>git tag -l "<tag_name>" : searches for a tag that match the particular pattern
