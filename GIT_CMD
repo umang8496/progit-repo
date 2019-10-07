@@ -140,10 +140,8 @@ moves the HEAD pointer to the specified commit and it changes the staging index 
 >>>git remote rename <existing_name> <new_name>
 >>>git remote remove <remote_name>
 >>>git remote show <remote> : displays the full list of remote references
-<<<<<<< HEAD
+
 >>>git fetch <remote> : helps synchronize our branch with the remote server
-=======
->>>>>>> e6fecf8640c8866d012e2d465241eff9c352367c
 
 >>>git tag --list|-l : lists the tags in alphabetical order
 >>>git tag -l "<tag_name>" : searches for a tag that match the particular pattern
