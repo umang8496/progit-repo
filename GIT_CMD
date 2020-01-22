@@ -120,6 +120,7 @@ This removes only the untracked files from the working directory.
 
 >>>git reset --soft|--mixed|--hard <SHA>
 >>>git reset HEAD <file_name> : for unstaging the changes, we use the reset option
+>>>git reset -- <file_name> : to unstage a local file in GIT
 >>>git reset --hard : reset staging area and working directory to match most recent commit and overwrites all the changes in the CWD
 
 --soft
@@ -160,3 +161,12 @@ By default, git push command doesn't transfer tags to remote servers. We need to
 
 If we already have a local branch and want to set it to a remote branch we just pulled down, or want to change the upstream branch we’re tracking, we can use the -u or --set-upstream-to option to git branch to explicitly set it at any time.
 >>>git branch --set-upstream-to|-u origin/serverfix
+
+
+Renaming Branches in GIT
+------------------------
+>>>git branch -m <new-name> : for renaming a local branch, if you are on it and want to rename it
+>>>git branch -m <old-name> <new-name> : for renaming a local branch, if you are on some different branch
+>>>git push origin :<old-name> <new-name> : renames the remote branch and pushes the changes
+>>>git push origin -u <new-name> : resets the upstream branch for the new local branch
+

@@ -34,7 +34,7 @@ branches are cheap to create and destroy. Creating a new branch is as quick and 
 
 Basic Merging
 -------------
-We merge branches using the merge command. For this we need to be present on the branch with would incorporate the other branch into it.
+We merge branches using the merge command. For this we need to be present on the branch which would incorporate the other branch into it.
 >>>git merge <branch>
 
 When we try to merge one commit with a commit that can be reached by following the first commit’s history,
