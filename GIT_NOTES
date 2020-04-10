@@ -138,3 +138,11 @@ Git supports two types of tags: lightweight and annotated.
 A lightweight tag is very much like a branch that doesn’t change — it’s just a pointer to a specific commit.
 Annotated tags, however, are stored as full objects in the Git database.
 They’re checksummed; contain the tagger name, email, and date; have a tagging message; and can be signed and verified with GNU Privacy Guard (GPG).
+
+
+Renaming GIT branches
+---------------------
+>>>git branch -m <new-name> : for renaming a local branch, if you are on it and want to rename it
+>>>git branch -m <old-name> <new-name> : for renaming a local branch, if you are on some different branch
+>>>git push origin :<old-name> <new-name> : renames the remote branch and pushes the changes
+>>>git push origin -u <new-name> : resets the upstream branch for the new local branch
