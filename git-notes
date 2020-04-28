@@ -1,4 +1,3 @@
-# Definitions
 
 Version Control Systems
 -----------------------
@@ -6,6 +5,101 @@ They are a category of tools that help a software team manage changes to the sou
 It keeps track of every modification to the code in a special kind of database.
 VCS are sometimes known as SCM(Source Code Management) or RCS(Revision Control System).
 GIT is the most widely used  Distributed VCS.
+
+Version Control is a system that records changes to a file or set of files over time so that we can recall specific versions later.
+In reality we can version control with nearly any type of file on a computer.
+It allows us:
+	to revert selected files back to a previous state,
+	to revert the entire project back to a previous state, 
+	to compare changes over time, 
+	to see who last modified something that might be causing a problem, 
+	to who introduced an issue and when, and more;
+Using a VCS also generally means that if we screw things up or lose files, we can easily recover.
+In addition, we get all this for very little overhead.
+
+
+Local Version Control Systems
+-----------------------------
+Many people’s version-control method of choice is to copy files into another directory (perhaps a time-stamped directory, if they’re clever).
+This approach is very common because it is so simple, but it is also incredibly error prone.
+It is easy to forget which directory we’re in and accidentally write to the wrong file or copy over files we don’t mean to.
+To deal with this issue, programmers long ago developed local VCSs that had a simple database that kept all the changes to files under revision control.
+One of the most popular VCS tools was a system called RCS, which is still distributed with many computers today.
+RCS works by keeping patch sets (that is, the differences between files) in a special format on disk;
+It can then re-create what any file looked like at any point in time by adding up all the patches.
+
+
+Centralized Version Control Systems
+-----------------------------------
+The next major issue that people encounter is that they need to collaborate with developers on other systems.
+To deal with this problem, Centralized Version Control Systems (CVCSs) were developed.
+These systems (such as CVS, Subversion, and Perforce) have a single server that contains all the versioned files, and a number of clients that check out files from that central place. For many years, this has been the standard for version control.
+This setup offers many advantages, especially over local VCSs. For example, everyone knows to a certain degree what everyone else on the project is doing.
+However, this setup also has some serious downsides.
+The most obvious is the single point of failure that the centralized server represents.
+If that server goes down for an hour, then during that hour nobody can collaborate at all or save versioned changes to anything they’re working on.
+If the hard disk the central database is on becomes corrupted, and proper backups haven’t been kept, we lose absolutely everything.
+
+
+Distributed Version Control Systems
+-----------------------------------
+This is where Distributed Version Control Systems (DVCSs) step in.
+In a DVCS (such as Git, Mercurial, Bazaar or Darcs), clients don’t just check out the latest snapshot of the files;
+Rather, they fully mirror the repository, including its full history.
+If any server dies, and these systems were collaborating via that server, any of the client repositories can be copied back up to the server to restore it.
+Every clone is really a full backup of all the data.
+Furthermore, many of these systems deal pretty well with having several remote repositories they can work with, so we can collaborate with different groups of people in different ways simultaneously within the same project.
+
+
+What is GIT ?
+-------------
+Git is a Distributed Version Control System, which was created with following goals in mind:
+• Speed
+• Simple design
+• Strong support for non-linear development (thousands of parallel branches)
+• Fully distributed
+• Able to handle large projects like the Linux kernel efficiently (speed and data size)
+
+The major difference between Git and any other VCS is the way Git thinks about its data.
+Conceptually, most other systems store information as a list of file-based changes.
+These other systems think of the information they store as a set of files and the changes made to each file over time, commonly described as delta-based version control.
+Git doesn’t think of or store its data this way. Instead, Git thinks of its data more like a series of snapshots of a miniature filesystem.
+With Git, every time we commit, or save the state of our project, Git basically takes a picture of what all our files look like at that moment and stores a reference to that snapshot.
+To be efficient, if files have not changed, Git doesn’t store the file again, just a link to the previous identical file it has already stored.
+Git thinks about its data more like a stream of snapshots.
+
+In Git, nearly all every operation is local.
+Most operations in Git need only local files and resources to operate, generally no information is needed from another computer on the network.
+To browse the history of the project, Git doesn’t need to go out to the server to get the history, it simply reads it directly from the local database.
+This also means that there is very little you can’t do if you’re offline or off VPN.
+
+Everything in Git is checksummed before it is stored and is then referred to by that checksum.
+This means it’s impossible to change the contents of any file or directory without Git knowing about it.
+This functionality is built into Git at the lowest levels and is integral to its philosophy.
+We can’t lose information in transit or get file corruption without Git being able to detect it.
+The mechanism that Git uses for this checksumming is called a SHA-1 hash.
+This is a 40-character string composed of hexadecimal characters (0–9 and a–f) and calculated based on the contents of a file or directory structure in Git.
+
+When we do actions in Git, nearly all of them only add data to the Git database.
+It is hard to get the system to do anything that is not undoable or to make it erase data in any way.
+
+
+Three States for Files in GIT
+-----------------------------
+Git has three main states that each file can reside in:
+COMMITTED:	means that the data is safely stored in the local database
+MODIFIED:	means that we have changed the file but have not committed it to the local database yet
+STAGED:		means that we have marked a modified file in its current version to go into the next commit snapshot
+This leads us to the three main sections of a Git project: the Git directory, the working tree, and the staging area.
+
+The ".git" directory is where Git stores the metadata and object database for the project.
+This is the most important part of Git, and it is what is copied when we clone a repository from another computer.
+
+The working tree is a single checkout of one version of the project.
+These files are pulled out of the compressed database in the Git directory and placed on disk to use or modify.
+
+The staging area is a file, generally contained in our Git directory, that stores information about what will go into our next commit.
+Its technical name in Git parlance is the “index”, but the phrase “staging area” works just as well.
 
 
 GIT Repository
@@ -15,22 +109,91 @@ In Git, "origin" is a shorthand name for the remote repository that a project wa
 More precisely, it is used instead of that original repository's URL - and thereby makes referencing much easier.
 
 
-git push
+Git Basics
+----------
+We can obtain a Git repository in one of two ways:
+	We can take a local directory that is currently not under version control, and turn it into a Git repository, or
+	We can clone an existing Git repository from elsewhere
+In either case, we end up with a Git repository on our local machine, ready for work.
+
+Remember that each file in the working directory can be in one of two states: tracked or untracked.
+Tracked files are files that were in the last snapshot; they can be unmodified, modified, or staged.
+In short, tracked files are files that Git knows about.
+Untracked files are everything else, any files in the working directory that were not in our last snapshot and are not in our staging area.
+When we first clone a repository, all of our files will be tracked and unmodified because Git just checked them out and we haven’t edited anything.
+
+Often, we’ll have a class of files that we don’t want Git to automatically add or even show us as being untracked.
+These are generally automatically generated files such as log files or files produced by our build system.
+In such cases, we can create a file listing patterns to match them named .gitignore.
+
+The rules for the patterns you can put in the .gitignore file are as follows:
+• Blank lines or lines starting with # are ignored.
+• Standard glob patterns work, and will be applied recursively throughout the entire working tree.
+• We can start patterns with a forward slash (/) to avoid recursivity.
+• We can end patterns with a forward slash (/) to specify a directory.
+• We can negate a pattern by starting it with an exclamation point (!)
+
+Glob patterns are like simplified regular expressions that shells use. An asterisk (*) matches zero or more characters;
+[abc] matches any character inside the brackets; 
+a question mark (?) matches a single character;
+brackets enclosing characters separated by a hyphen ([0-9]) matches any character between them (in this case 0 through 9);
+We can also use two asterisks to match nested directories; a/**/z would match a/z, a/b/z, a/b/c/z, and so on.
+
+Remember we cannot ignore tracked files. Only untrcaked files can be ignored through .gitignore
+
+It’s important to note that git diff by itself doesn’t show all changes made since the last commit, only changes that are still unstaged.
+If we’ve staged all of our changes, git diff will give us no output.
+git diff --cached and git diff --staged are synonymous and compares the staged changes to your last commit.
+
+git commit -am "<commit-message>" allows us to skip the staging area and directly send the changes into the local database after making a commit.
+
+To remove a file from Git, we have to remove it from our tracked files (more accurately, remove it from the staging area) and then commit.
+The git rm command does that, and also removes the file from the working directory so we don’t see it as an untracked file the next time around.
+Another useful thing we may want to do is to keep the file in our working tree but remove it from the staging area.
+In other words, we may want to keep the file on our hard drive but not have Git track it anymore.
+This is useful if we forgot to add something to our .gitignore file and accidentally staged it, like a large log file or a bunch of .a compiled files.
+To do this, use the --cached option:  git rm --cached <filename>
+
+Unlike many other VCS systems, Git doesn’t explicitly track file movement.
+If we rename a file in Git, no metadata is stored in Git that tells us that we renamed the file.
+If we want to rename a file in Git, we can use the git mv command for it.
+
+For viewing th Git commit history, we use git log. It has various flavours to it too.
+By default, with no arguments, git log lists the commits made in that repository in reverse chronological order;
+As we can see, this command lists each commit with its SHA-1 checksum, the author’s name and email, the date written, and the commit message.
+One of the more helpful options is -p or --patch, which shows the difference (the patch output) introduced in each commit.
+We can also limit the number of log entries displayed, such as using -2 to show only the last two entries.
+This option displays the same information but with a diff directly following each entry.
+This is very helpful for code review or to quickly browse what happened during a series of commits that a collaborator has added.
+--stat and --oneline arguments are also helpful for viewing the commit history.
+
+
+Preventing the display of merge commits
+---------------------------------------
+Depending on the workflow used in our repository, it’s possible that a sizable percentage of the commits in our log history are just merge commits, which typically aren’t very informative.
+To prevent the display of merge commits cluttering up our log history, simply add the log option --no-merges.
+
+
+Undoing Unpublished Commits
+---------------------------
+
+
+Git Push
 --------
-If you are publishing a local branch for the first time on a remote, the "-u" option is helpful.
+If we are publishing a local branch for the first time on a remote, the "-u" option is helpful.
 It makes sure that a tracking connection between the local and the newly created remote branch is established.
->>>git push -u <remote_repository> <local_branch>
->>>git push -u origin devline01
+>>> git push -u <remote_repository> <local_branch>
+>>> git push -u origin devline01
 
 
-git fetch v/s git pull
+Git Fetch v/s Git Pull
 ----------------------
 The git fetch command downloads commits, files, and refs from a remote repository into your local repo.
 
 Downloading data is an essential step in our daily work because the remote data we are looking in our local repo is just a snapshot.
 It's only as up-to-date as the last time we explicitly downloaded fresh data from the remote with fetch or pull.
 
-git fetch only downloads new data from a remote repo, but does not integrate any of this new data into our working files.
+Git fetch only downloads new data from a remote repo, but does not integrate any of this new data into our working files.
 Due to it's harmless nature, we can rest assured, fetch will never manipulate destroy, or screw up anything.
 
 git pull, in contrast, is used with a different goal in mind: to update our current HEAD branch with the latest changes from the remote server.
@@ -60,20 +223,17 @@ Unlike the previous checkout startegy, we can continue using the same branch.
 This is the ideal undo method for working with the public shared repositories.
 But if our requirement is of keeping a curated and minimal GIT history then this strategy may not be satisfactory.
 
-
 The git clean is to some extent an 'undo' command and can be considered complementary to commands like get reset and git checkout.
 Unlike git reset and git checkout that work on tracked files, git clean mainly operates on untracked files.
 By default, Git is globally configured to require that git clean be passed a "force" option to initiate.
 This is an important safety mechanism. When finally executed git clean is not undo-able.
 When fully executed, git clean will make a hard filesystem deletion, similar to executing the command line rm utility.
 
-
 The git revert command can be considered as an 'undo' type command, however, it is not a traditional undo operation.
 Other 'undo' commands like, git checkout and git reset, move the HEAD and branch ref pointers to a specified commit.
 Whereas git revert also takes a specified commit, however it does not move ref pointers to this commit.
 A revert operation will take the specified commit, inverse the changes from that commit, and create a new "revert commit".
 The ref pointers are then updated to point at the new revert commit making it the tip of the branch.
-
 
 The git reset command is a complex and versatile tool for undoing changes. It has three primary forms of invocation.
 These forms correspond to commandline arguments --soft, --mixed, --hard.
@@ -131,18 +291,10 @@ x, exec = run command (the rest of the line) using shell
 d, drop = remove commit
 
 
-Tagging
--------
-Git has the ability to tag specific points in a repository’s history as being important.
-Git supports two types of tags: lightweight and annotated.
-A lightweight tag is very much like a branch that doesn’t change — it’s just a pointer to a specific commit.
-Annotated tags, however, are stored as full objects in the Git database.
-They’re checksummed; contain the tagger name, email, and date; have a tagging message; and can be signed and verified with GNU Privacy Guard (GPG).
-
-
 Renaming GIT branches
 ---------------------
->>>git branch -m <new-name> : for renaming a local branch, if you are on it and want to rename it
->>>git branch -m <old-name> <new-name> : for renaming a local branch, if you are on some different branch
->>>git push origin :<old-name> <new-name> : renames the remote branch and pushes the changes
->>>git push origin -u <new-name> : resets the upstream branch for the new local branch
+>>> git branch -m <new-name> : for renaming a local branch, if we are on it and want to rename it
+>>> git branch -m <old-name> <new-name> : for renaming a local branch, if we are on some different branch
+>>> git push origin :<old-name> <new-name> : renames the remote branch and pushes the changes
+>>> git push origin -u <new-name> : resets the upstream branch for the new local branch
+
