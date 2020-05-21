@@ -31,6 +31,8 @@ Never amend a commit that has been pushed to the remote repository
 >>>git diff : displays what has been changed but not yet staged
 >>>git diff --staged|--cached : compares staged changes to the last commit 
 >>>git diff --color-words <file_name>
+>>>git diff <SHA> <file_name> : shows the difference between specified commit and HEAD for the specified file
+>>>git diff <SHA> <SHA> <file_name> : shows the difference between specified commits for the specified file
 
 >>>git log --oneline
 >>>git log --oneline --decorate --graph --all
@@ -48,10 +50,11 @@ In GIT, checkout is the act of switching between different versions of a target 
 It operates on three distinct entities, files, commits and branches.
 >>>git checkout -- <filename> : discards the changes made to the file when it is in unstaged state
 >>>git checkout <SHA> -- <file_name> : bring the specified file in sync with the earlier version of itself corresponding to the commit
-
 >>>git checkout -b <branch_name> : create a new branch and switch to it
 >>>git checkout <branch_name> : simply switch to the specified branch
 >>>git checkout --force|-f <branch_name>
+>>>git checkout <SHA> : removes the HEAD to the specified commit
+>>>git checkout -f <SHA> : forcefully removes the HEAD to the specified commit AND undo the modifications
 
 >>>git branch <branch> : creates a branch but does not switch to it
 >>>git branch : displays the current branch
@@ -162,7 +165,6 @@ By default, git push command doesn't transfer tags to remote servers. We need to
 If we already have a local branch and want to set it to a remote branch we just pulled down, or want to change the upstream branch we’re tracking, we can use the -u or --set-upstream-to option to git branch to explicitly set it at any time.
 >>>git branch --set-upstream-to|-u origin/serverfix
 
-
 Renaming Branches in GIT
 ------------------------
 >>>git branch -m <new-name> : for renaming a local branch, if you are on it and want to rename it
@@ -170,3 +172,9 @@ Renaming Branches in GIT
 >>>git push origin :<old-name> <new-name> : renames the remote branch and pushes the changes
 >>>git push origin -u <new-name> : resets the upstream branch for the new local branch
 
+git cat-file
+------------
+>>>git cat-file -t <object> : tells the type of the object corresponding for the given checksum value
+>>>git cat-file -p <object> : pretty-prints the contents of <object> based on its type
+>>>git cat-file -e <object> : exits with zero status if <object> exists and is a valid object; otherwise, exits with non-zero and emits an error on stderr
+>>>git cat-file -s <object> : shows the object size identified by the <object>

@@ -298,3 +298,20 @@ Renaming GIT branches
 >>> git push origin :<old-name> <new-name> : renames the remote branch and pushes the changes
 >>> git push origin -u <new-name> : resets the upstream branch for the new local branch
 
+git cat-file command
+--------------------
+This command provides the content or the type of an object in the repository.
+Provide content or type and size information for repository objects.
+The object types are:	commit;	 tree;  blob;  annotated tag;
+
+The commit object contains the directory tree object hash, parent commit hash, author, committer, date and message.
+The tree object contains one line per file or subdirectory, with each line giving file permissions, object type, object hash and filename.
+Object type is usually one of “blob” for a file or “tree” for a subdirectory.
+Blob is an abbreviation for “binary large object”.
+When we git add a file, git creates a blob object containing the contents of the file.
+Blobs are therefore the git object type for storing files.
+The tag object type contains the hash of the tagged object, the type of tagged object (usually a commit), the tag name, author, date and message.
+
+>>>git cat-file (-t [--allow-unknown-type]| -s [--allow-unknown-type]| -e | -p | <type> | --textconv | --filters ) [--path=<path>] <object>
+>>>git cat-file (--batch | --batch-check) [ --textconv | --filters ] [--follow-symlinks]
+
