@@ -49,6 +49,7 @@ Never amend a commit that has been pushed to the remote repository
 In GIT, checkout is the act of switching between different versions of a target entity.
 It operates on three distinct entities, files, commits and branches.
 >>>git checkout -- <filename> : discards the changes made to the file when it is in unstaged state
+>>>git restore <filename>... : discards the changes made to the file when it is in unstaged state
 >>>git checkout <SHA> -- <file_name> : bring the specified file in sync with the earlier version of itself corresponding to the commit
 >>>git checkout -b <branch_name> : create a new branch and switch to it
 >>>git checkout <branch_name> : simply switch to the specified branch
@@ -69,6 +70,12 @@ It operates on three distinct entities, files, commits and branches.
 >>>git branch --merged : displays the branches that are already merged into the current branch
 >>>git branch --no-merged : displays the branches that have not been merged yet into the current branch
 
+## Deleting remote branches in Git
+>>>git push origin --delete <branch> : for Git version 1.7.0 or newer
+>>>git push origin :<branch> : for Git version older than 1.7.0
+>>>git fetch <remote>|origin --prune : deletes multiple obsolete tracking branches and removes obsolete referencess
+>>>git fetch <remote>|origin -p : shorter version
+
 >>>git rm <filename> : removes the file from the staging area as well as working tree
 >>>git rm --cached <filename> : removes the file from tracking state but keeps it on the hard drive
 
@@ -79,6 +86,7 @@ It operates on three distinct entities, files, commits and branches.
 >>>git push <remote> --all : pushes all the local branches to the specified remote
 >>>git push origin :<branch-name> : this would delete the branch from the remote server [older method]
 >>>git push origin --delete <branch-name> : this would delete the branch from the remote server [newer method]
+>>>git push <remote> <local-branch>:<remote-branch> : this would send the local branch onto the rmeote repository
 
 >>>git fetch <remote> : fetches all the branches from the repo and downloads all of the required commits and files from the repo
 >>>git fetch <remote> <branch> : only fetches the specified branch
@@ -178,3 +186,4 @@ git cat-file
 >>>git cat-file -p <object> : pretty-prints the contents of <object> based on its type
 >>>git cat-file -e <object> : exits with zero status if <object> exists and is a valid object; otherwise, exits with non-zero and emits an error on stderr
 >>>git cat-file -s <object> : shows the object size identified by the <object>
+
