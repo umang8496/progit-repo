@@ -176,6 +176,59 @@ To prevent the display of merge commits cluttering up our log history, simply ad
 
 Undoing Unpublished Commits
 ---------------------------
+If we have mistakenly commmited some files or changes or have forgotten to commit something in the previous commit, 
+And if the previous commit has not been published,
+Then we can ammed that commit by using "git commit --amend", this command takes our staging area and uses it for the commit.
+If we’ve made no changes since our last commit, then our snapshot will look exactly the same, and all we’ll change is our commit message.
+The same commit-message editor fires up, but it already contains the message of our previous commit.
+We can edit the message the same as always, but it overwrites the previous commit.
+
+It’s important to understand that when we’re amending our last commit, we’re replacing it entirely with a new improved commit that pushes the old commit out of the way and puts the new commit in its place.
+Effectively, it’s as if the previous commit never happened, and it won’t show up in our repository history.
+
+For unstaging a staged file, we use "git reset HEAD <file>..."
+To discard the changes made into the file, we use "git checkout -- <file>..."
+
+Remember, anything that is committed in Git can almost always be recovered. Even commits that were on branches that were deleted or commits that were overwritten with an --amend commit can be recovered.
+However, anything we lose that was never committed is likely never to be seen again.
+
+
+Working with Remotes
+--------------------
+To be able to collaborate on any Git project, we need to know how to manage our remote repositories.
+Remote repositories are versions of our project that are hosted on the Internet or network somewhere.
+
+Collaborating with others involves managing these remote repositories and pushing and pulling data to and from them when we need to share work.
+Managing remote repositories includes knowing how to add remote repositories, remove remotes that are no longer valid, manage various remote branches and define them as being tracked or not, and more.
+
+Remote repositories can be on our local machines.
+It is entirely possible that we can be working with a “remote” repository that is, in fact, on the same host we are.
+The word “remote” does not necessarily imply that the repository is somewhere else on the network or Internet, only that it is elsewhere.
+Working with such a remote repository would still involve all the standard pushing, pulling and fetching operations as with any other remote.
+
+To see which remote servers we have configured, we can run the git remote command. It lists the shortnames of each remote handle we have specified.
+If we have cloned a repository, we should at least see origin — that is the default name Git gives to the server we cloned from.
+To add a new remote Git repository as a shortname we can reference easily, run "git remote add <shortname> <url>"
+
+The command "git fetch <remote>" goes out to that remote project and pulls down all the data from that remote project that we don’t have yet.
+After we do this, we should have references to all the branches from that remote, which we can merge in or inspect at any time.
+It’s important to note that the "git fetch" command only downloads the data to the local repository.
+It doesn’t automatically merge it with any of our work or modify what we’re currently working on.
+We have to merge it manually into your work when we’re ready.
+Whereas, running "git pull" generally fetches data from the server we originally cloned from and automatically tries to merge it into the code we’re currently working on.
+
+
+Inspecting a Remote
+-------------------
+If we want to see more information about a particular remote, we can use the "git remote show <remote>" command.
+This command shows which branch is automatically pushed to when we run git push while on certain branches.
+It also shows us which remote branches on the server we don’t yet have, which remote branches we have that have been removed from the server, and multiple local branches that are able to merge automatically with their remote-tracking branch when we run git pull.
+
+We can run "git remote rename" to change a remote’s shortname.
+git remote rename <existing-name> <new-name>
+It’s worth mentioning that this changes all your remote-tracking branch names too.
+If we want to remove a remote for some reason, then we can run "git remote remove <remote>"
+Once we delete the reference to a remote this way, all remote-tracking branches and configuration settings associated with that remote are also deleted.
 
 
 Git Push
@@ -196,13 +249,20 @@ It's only as up-to-date as the last time we explicitly downloaded fresh data fro
 Git fetch only downloads new data from a remote repo, but does not integrate any of this new data into our working files.
 Due to it's harmless nature, we can rest assured, fetch will never manipulate destroy, or screw up anything.
 
-git pull, in contrast, is used with a different goal in mind: to update our current HEAD branch with the latest changes from the remote server.
+Git pull, in contrast, is used with a different goal in mind: to update our current HEAD branch with the latest changes from the remote server.
 This means that git pull not only downloads the new data but also directly integrates it into our current working files.
 It has its own consequences.
 Since git pull tries to merge remote changes with our local ones, a so-called merge-conflict can occur.
 Also, we should not have any uncommitted local changes before we pull data.
 
 In the simplest terms, git pull does a git fetch followed by a git merge.
+
+
+Git Tagging
+-----------
+Like most VCSs, Git has the ability to tag specific points in a repository’s history as being important.
+Typically, people use this functionality to mark release points (v1.0, v2.0 and so on).
+
 
 
 Undoing Changes
@@ -298,6 +358,7 @@ Renaming GIT branches
 >>> git push origin :<old-name> <new-name> : renames the remote branch and pushes the changes
 >>> git push origin -u <new-name> : resets the upstream branch for the new local branch
 
+
 git cat-file command
 --------------------
 This command provides the content or the type of an object in the repository.
@@ -314,4 +375,35 @@ The tag object type contains the hash of the tagged object, the type of tagged o
 
 >>>git cat-file (-t [--allow-unknown-type]| -s [--allow-unknown-type]| -e | -p | <type> | --textconv | --filters ) [--path=<path>] <object>
 >>>git cat-file (--batch | --batch-check) [ --textconv | --filters ] [--follow-symlinks]
+
+
+git cherry-pick command
+-----------------------
+It is a powerful command that enables arbitrary Git commits to be picked by reference and appended to the current working HEAD.
+Cherry picking is the act of picking a commit from a branch and applying it to another.
+Cherry picking can cause duplicate commits and many scenarios where cherry picking would work, traditional merges are preferred instead.
+
+Let's assume we have a repository with the following branch state:
+    a - b - c - d   Master
+         \
+           e - f - g Feature
+Let's say we wanted to use commit `f` in master.
+
+First we ensure that we are working on the master branch.
+	git checkout master
+
+Then we execute the cherry-pick with the following command:
+	git cherry-pick f
+
+Once executed our Git history will look like:
+    a - b - c - d - f   Master
+         \
+           e - f - g Feature
+The f commit has been successfully picked into the feature branch.
+
+>>>git cherry-pick [--edit|-e] [--no-commit|-n] [-m parent-number] [-s] [-x] [--ff] [-S[<keyid>]] <commit>…​
+>>>git cherry-pick (--continue | --skip | --abort | --quit)
+
+Passing the -edit option will cause git to prompt for a commit message before applying the cherry-pick operation.
+The --no-commit option will execute the cherry pick but instead of making a new commit it will move the contents of the target commit into the working directory of the current branch.
 

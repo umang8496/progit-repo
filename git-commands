@@ -187,3 +187,7 @@ git cat-file
 >>>git cat-file -e <object> : exits with zero status if <object> exists and is a valid object; otherwise, exits with non-zero and emits an error on stderr
 >>>git cat-file -s <object> : shows the object size identified by the <object>
 
+git cherry-pick
+---------------
+>>>git cherry-pick <SHA> : puts the commit corresponding to the specified SHA value into the current branch
+
