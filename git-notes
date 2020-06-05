@@ -407,3 +407,20 @@ The f commit has been successfully picked into the feature branch.
 Passing the -edit option will cause git to prompt for a commit message before applying the cherry-pick operation.
 The --no-commit option will execute the cherry pick but instead of making a new commit it will move the contents of the target commit into the working directory of the current branch.
 
+
+(git add -A) v/s (git add .) v/s (git add -u)
+---------------------------------------------
+(git add -A) ==> stages all changes
+(git add . ) ==> stages new files and modifications, without deletions
+(git add -u) ==> stages modifications and deletions, without new files
+
+(git add -A) is equivalent to (git add .) and (git add -u)
+
+(git add .) looks at the working tree and adds all those paths to the staged changes if they are either changed or are new and not ignored.
+It does not stage any 'rm' actions or deletions.
+
+(git add -u) looks at all the already tracked files and stages the changes to those files if they are different or if they have been removed. 
+It does not add any new files, it only stages changes to already tracked files.
+
+(git add -A) is a handy shortcut for doing both of those.
+
