@@ -191,3 +191,11 @@ git cherry-pick
 ---------------
 >>>git cherry-pick <SHA> : puts the commit corresponding to the specified SHA value into the current branch
 
+
+git miscellaneous
+-----------------
+git command to get the total count of all the commits in a repository
+>>> git rev-list HEAD --count --first-parent
+
+
+
