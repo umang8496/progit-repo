@@ -197,5 +197,26 @@ git miscellaneous
 git command to get the total count of all the commits in a repository
 >>> git rev-list HEAD --count --first-parent
 
+View the summary of a commit
+>>> git show <commit> --stat
+
+View specific file changes for a commit
+>>> git show <commit> -- <filepath>
+
+
+`git merge` vs `git rebase`
+---------------------------
+When there are changes on the main branch that we want to incorporate into our branch, we can either merge the changes in or rebase our branch from a different point.
+
+`merge` takes the changes from one branch and merges them into another branch in one merge commit.
+`git merge origin/main your-branch`
+
+`rebase` adjusts the point at which a branch actually branched off (moves the branch to a new starting point from the base branch).
+`git rebase origin/main your-branch`
+
+Generally, we’ll use rebase when there are changes in an upstream branch (like main) that yowe want to include in our branch.
+We’ll use merge when there are changes in a branch that you want to put back into main.
+
+
 
 
